@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(primaryColor: Colors.blue),
-      home: const LoginPage(),
+      home: const MemoList(),
     );
   }
 }

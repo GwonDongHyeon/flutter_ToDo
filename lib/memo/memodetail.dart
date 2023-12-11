@@ -39,36 +39,51 @@ class DetailPage extends StatelessWidget {
               user.memoTitle.toString(),
               style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(
+              height: 10,
+            ),
             Text(
               'Date: ${user.memoDate}',
               style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 16),
-            Text(
-              user.memoTitle,
-              style: const TextStyle(fontSize: 12),
-            ),
-            Text(
-              user.memoContent,
-              style: const TextStyle(fontSize: 12),
-            ),
-            Text(
-              user.memoStartLocation,
-              style: const TextStyle(fontSize: 18),
-            ),
-            Text(
-              user.memoEndLocation,
-              style: const TextStyle(fontSize: 12),
-            ),
             Expanded(
-              child: Align(
-                alignment: Alignment.bottomRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    launchGoogleMaps();
-                  },
-                  child: const Text('Navigator'),
-                ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Start Location : ${user.memoStartLocation}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(
+                    height: 6,
+                  ),
+                  Text(
+                    'End Location : ${user.memoEndLocation}',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    'Content : ${user.memoContent}',
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          launchGoogleMaps();
+                        },
+                        child: const Text('Navigator'),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

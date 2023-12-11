@@ -5,14 +5,14 @@ import 'package:project1/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:project1/model/user.dart';
 
-class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+class MemoPlus extends StatefulWidget {
+  const MemoPlus({Key? key}) : super(key: key);
 
   @override
-  State<SignupPage> createState() => _SignupPageState();
+  State<MemoPlus> createState() => _MemoPlus();
 }
 
-class _SignupPageState extends State<SignupPage> {
+class _MemoPlus extends State<MemoPlus> {
   var formKey = GlobalKey<FormState>();
 
   var memoDateController = TextEditingController();
@@ -32,8 +32,7 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     try {
-      var res =
-          await http.post(Uri.parse(API.signup), body: userModel.toJson());
+      var res = await http.post(Uri.parse(API.input), body: userModel.toJson());
 
       if (res.statusCode == 200) {
         var resSignup = jsonDecode(res.body);
@@ -87,7 +86,7 @@ class _SignupPageState extends State<SignupPage> {
                                     await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
+                                  firstDate: DateTime.now(),
                                   lastDate: DateTime(2101),
                                 );
                                 if (pickedDate != null &&
@@ -105,7 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                                   border: Border(
                                     bottom: BorderSide(
                                       color: Colors.grey[400]!,
-                                      width: 1.0,
+                                      width: 1.0, // 조절할 높이 값
                                     ),
                                   ),
                                 ),
@@ -234,6 +233,7 @@ class _SignupPageState extends State<SignupPage> {
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     saveInfo();
+                    Navigator.pop(context);
                   }
                 },
                 // ignore: avoid_unnecessary_containers

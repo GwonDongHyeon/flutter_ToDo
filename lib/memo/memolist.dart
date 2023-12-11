@@ -8,14 +8,14 @@ import 'package:project1/memo/service.dart';
 import 'package:project1/memo/memodetail.dart';
 import 'package:http/http.dart' as http;
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class MemoList extends StatefulWidget {
+  const MemoList({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPage();
+  State<MemoList> createState() => _MemoList();
 }
 
-class _LoginPage extends State<LoginPage> {
+class _MemoList extends State<MemoList> {
   List<User2> _user = <User2>[];
   bool loading = false;
   Set<int> selectedIds = {};
@@ -75,66 +75,123 @@ class _LoginPage extends State<LoginPage> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: ListView.builder(
-            padding: const EdgeInsets.symmetric(vertical: 12.0),
-            itemCount: _user.length,
-            itemBuilder: (context, index) {
-              User2 user = _user[index];
-              return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 6.0),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(6.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black),
-                            borderRadius: BorderRadius.circular(12.0)),
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DetailPage(user),
-                              ),
-                            );
-                          },
-                          leading: Checkbox(
-                            value: selectedIds.contains(user.memoId),
-                            onChanged: (_) {
-                              setState(() {
-                                if (selectedIds.contains(user.memoId)) {
-                                  selectedIds.remove(user.memoId);
-                                } else {
-                                  selectedIds.add(user.memoId);
-                                }
-                              });
-                            },
-                          ),
-                          title: Text(user.memoTitle),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: loading
+          ? Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ListView.builder(
+                itemCount: _user.length,
+                itemBuilder: (context, index) {
+                  User2 user = _user[index];
+
+                  if (index == 0 ||
+                      _user[index - 1].memoDate != user.memoDate) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12.0),
+                          child: Row(
                             children: [
-                              Text(user.memoContent),
-                              Text(user.memoDate),
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 2,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  user.memoDate,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const Expanded(
+                                child: Divider(
+                                  thickness: 2,
+                                  color: Colors.grey,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      )));
-            }),
-      ),
+                        buildMemoTile(user),
+                      ],
+                    );
+                  } else {
+                    return buildMemoTile(user);
+                  }
+                },
+              ),
+            )
+          : const Center(child: CircularProgressIndicator()),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          await Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const SignupPage(),
+              builder: (context) => const MemoPlus(),
             ),
           );
+          setState(() {
+            loading = false;
+          });
+          Services.getInfo().then((value) {
+            setState(() {
+              _user = value;
+              loading = true;
+            });
+          });
         },
         child: const Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
+  }
+
+  Widget buildMemoTile(User2 user) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(6.0),
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black),
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailPage(user),
+                ),
+              );
+            },
+            leading: Checkbox(
+              value: selectedIds.contains(user.memoId),
+              onChanged: (_) {
+                setState(() {
+                  if (selectedIds.contains(user.memoId)) {
+                    selectedIds.remove(user.memoId);
+                  } else {
+                    selectedIds.add(user.memoId);
+                  }
+                });
+              },
+            ),
+            title: Text(user.memoTitle),
+            subtitle: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(user.memoContent),
+                Text(user.memoDate),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

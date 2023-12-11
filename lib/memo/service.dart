@@ -10,6 +10,13 @@ class Services {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final List<User2> user = userFromJson(response.body);
+
+        user.sort((a, b) {
+          DateTime aDate = DateTime.parse(a.memoDate);
+          DateTime bDate = DateTime.parse(b.memoDate);
+          return aDate.compareTo(bDate);
+        });
+
         return user;
       } else {
         Fluttertoast.showToast(msg: 'Error occurred. Please try again');
