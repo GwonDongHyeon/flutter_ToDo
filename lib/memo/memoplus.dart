@@ -45,6 +45,8 @@ class _MemoPlus extends State<MemoPlus> {
             startLocaionController.clear();
             endLocationController.clear();
           });
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
         } else {
           Fluttertoast.showToast(msg: 'Error occurred. Please try again');
         }
@@ -104,7 +106,7 @@ class _MemoPlus extends State<MemoPlus> {
                                   border: Border(
                                     bottom: BorderSide(
                                       color: Colors.grey[400]!,
-                                      width: 1.0, // 조절할 높이 값
+                                      width: 1.0,
                                     ),
                                   ),
                                 ),
@@ -233,7 +235,6 @@ class _MemoPlus extends State<MemoPlus> {
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     saveInfo();
-                    Navigator.pop(context);
                   }
                 },
                 // ignore: avoid_unnecessary_containers

@@ -23,11 +23,14 @@ class _MemoList extends State<MemoList> {
   @override
   void initState() {
     super.initState();
-    Services.getInfo().then((value) {
-      setState(() {
-        _user = value;
-        loading = true;
-      });
+    _fetchData();
+  }
+
+  Future<void> _fetchData() async {
+    final newData = await Services.getInfo();
+    setState(() {
+      _user = newData;
+      loading = true;
     });
   }
 
@@ -47,11 +50,7 @@ class _MemoList extends State<MemoList> {
           }
         }
       }
-      var newData = await Services.getInfo();
-      setState(() {
-        _user = newData;
-        loading = true;
-      });
+      _fetchData();
     } catch (e) {
       // ignore: avoid_print
       print(e.toString());
@@ -70,7 +69,31 @@ class _MemoList extends State<MemoList> {
             onPressed: selectedIds.isEmpty
                 ? null
                 : () {
-                    deletInfo();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Confirm Deletion'),
+                          content:
+                              const Text('Are you sure you want to delete?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                deletInfo();
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Delete'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
           ),
         ],
@@ -99,7 +122,8 @@ class _MemoList extends State<MemoList> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Text(
                                   user.memoDate,
                                   style: const TextStyle(
@@ -135,15 +159,7 @@ class _MemoList extends State<MemoList> {
               builder: (context) => const MemoPlus(),
             ),
           );
-          setState(() {
-            loading = false;
-          });
-          Services.getInfo().then((value) {
-            setState(() {
-              _user = value;
-              loading = true;
-            });
-          });
+          _fetchData();
         },
         child: const Icon(Icons.add),
       ),
@@ -161,13 +177,14 @@ class _MemoList extends State<MemoList> {
             borderRadius: BorderRadius.circular(12.0),
           ),
           child: ListTile(
-            onTap: () {
-              Navigator.push(
+            onTap: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => DetailPage(user),
                 ),
               );
+              _fetchData();
             },
             leading: Checkbox(
               value: selectedIds.contains(user.memoId),
