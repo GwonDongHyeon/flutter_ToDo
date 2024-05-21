@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:project1/memo/memolist.dart';
+import 'package:flutter_todo/memo/memolist.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

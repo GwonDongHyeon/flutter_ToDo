@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:project1/api/api.dart';
-import 'package:project1/memo/memoplus.dart';
-import 'package:project1/model/user2.dart';
-import 'package:project1/memo/service.dart';
-import 'package:project1/memo/memodetail.dart';
+import 'package:flutter_todo/api/api.dart';
+import 'package:flutter_todo/memo/memoplus.dart';
+import 'package:flutter_todo/model/user2.dart';
+import 'package:flutter_todo/memo/service.dart';
+import 'package:flutter_todo/memo/memodetail.dart';
 import 'package:http/http.dart' as http;
 
 class MemoList extends StatefulWidget {

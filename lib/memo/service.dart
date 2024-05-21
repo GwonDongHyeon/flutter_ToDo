@@ -1,12 +1,12 @@
 import 'package:http/http.dart' as http;
-import 'package:project1/model/user2.dart';
+import 'package:flutter_todo/model/user2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Services {
   static const String url = 'http://10.0.2.2/api_members/user/output.php';
 
   static Future<List<User2>> getInfo() async {
-    try { 
+    try {
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
         final List<User2> user = userFromJson(response.body);
