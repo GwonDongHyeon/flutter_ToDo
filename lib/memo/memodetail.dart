@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_todo/api/api.dart';
-import 'package:flutter_todo/model/user2.dart';
+import 'package:todo_flutter/api/api.dart';
+import 'package:todo_flutter/model/user2.dart';
 
 class DetailPage extends StatefulWidget {
   final User2 user;

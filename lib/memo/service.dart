@@ -1,5 +1,5 @@
 import 'package:http/http.dart' as http;
-import 'package:flutter_todo/model/user2.dart';
+import 'package:todo_flutter/model/user2.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Services {

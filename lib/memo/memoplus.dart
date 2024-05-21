@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_todo/api/api.dart';
+import 'package:todo_flutter/api/api.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:flutter_todo/model/user.dart';
+import 'package:todo_flutter/model/user.dart';
 
 class MemoPlus extends StatefulWidget {
   const MemoPlus({Key? key}) : super(key: key);
